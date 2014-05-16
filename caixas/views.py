@@ -77,14 +77,17 @@ def caixaExcluir(request, pk=0):
 def caixaFluxo(request):
     if request.method == 'POST':
       
-        dataInicial = datetime.strptime(request.POST.get('dataInicio',''), '%d/%m/%Y')
-        dataFinal = datetime.strptime(request.POST.get('dataFinal',''), '%d/%m/%Y')
+        dataInicio = datetime.strptime(request.POST.get('dataInicio',''), '%d/%m/%Y %H:%M:%S')
+        dataFinal = datetime.strptime(request.POST.get('dataFinal',''), '%d/%m/%Y %H:%M:%S')
         total = 0
         
         try:
             contas = Contas.objects.filter(data__range=(dataInicio,dataFinal))
             for conta in contas:
-                total +=conta.valor
+                if conta.tipo == 'E':
+                    total +=conta.valor
+                elif conta.tipo == 'S':
+                      total -= conta.valor
         except:
             contas = []
             
