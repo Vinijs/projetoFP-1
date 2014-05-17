@@ -36,7 +36,7 @@ def caixaSalvar(request):
         conta.tipo = request.POST.get('tipo', '').upper()
         conta.descricao = request.POST.get('descricao', 'CONTA SEM DESCRIÇÃO').upper()
         conta.valor = request.POST.get('valor', '0.00').replace(',','.')
-        conta.data = datetime.strptime(request.POST.get('data', ''), '%d/%m/%Y %H:%M:%S')
+        conta.data = datetime.strptime(request.POST.get('data', ''), '%d/%m/%Y')
 
         conta.save()
     return HttpResponseRedirect('/caixas/')
@@ -77,21 +77,24 @@ def caixaExcluir(request, pk=0):
 def caixaFluxo(request):
     if request.method == 'POST':
       
-        dataInicio = datetime.strptime(request.POST.get('dataInicio',''), '%d/%m/%Y %H:%M:%S')
-        dataFinal = datetime.strptime(request.POST.get('dataFinal',''), '%d/%m/%Y %H:%M:%S')
+        dataInicio = datetime.strptime(request.POST.get('dataInicio',''), '%d/%m/%Y')
+        dataFinal = datetime.strptime(request.POST.get('dataFinal',''), '%d/%m/%Y')
         total = 0
-        
+        entrada = 0
+        saida = 0
         try:
-            contas = Contas.objects.filter(data__range=(dataInicio,dataFinal))
+            contas = Conta.objects.filter(data__range=(dataInicio,dataFinal))
             for conta in contas:
                 if conta.tipo == 'E':
-                    total +=conta.valor
-                elif conta.tipo == 'S':
-                      total -= conta.valor
+                    entrada = entrada + conta.valor
+                if conta.tipo == 'S':
+                  saida = saida + conta.valor
+                    
+            total = entrada - saida
         except:
             contas = []
             
-        return render(request, '/caixas/formFluxoCaixa.html', {'contas' : contas, 'total': total, 'dataInicio': dataInicio, 'dataFinal': dataFinal})
+        return render(request, 'caixas/formFluxoCaixa.html', {'contas' : contas, 'total': total, 'dataInicio': dataInicio, 'dataFinal': dataFinal})
     
     return render(request, 'caixas/formFluxoCaixa.html',{'contas' : []})
    

@@ -8,23 +8,21 @@
 
             <div class="col-sm-4">
                 <label for="datetimepicker"><b>Data Inicial</b></label>
-                <p class="visible-print">{{ dataInicio|date:"d/m/Y H:i:s" }}</p>
-                <div id="datetimepicker" class="input-group date hidden-print">
-                    <input type="text" name="dataInicio" value='{{ dataInicio|date:"d/m/Y H:i:s" }}' class="form-control">
+                <div class="input-group date hidden-print datetimepicker">
+                    <input type="text" name="dataInicio" value='{{ dataInicio}}' class="form-control" placeholder="01/01/2014">
                     <span class="input-group-addon add-on glyphicon glyphicon-calendar"></span>
                 </div>
             </div>
             <div class="col-sm-4">
-                <label for="datetimepicker2" class=""><b>Data Final</b></label>
-                <p class="visible-print">{{ dataFinal|date:"d/m/Y H:i:s" }}</p>
-                <div id="datetimepicker2" class="input-group date hidden-print">
-                    <input type="text" name="dataFinal" value='{{ dataFinal|date:"d/m/Y H:i:s" }}' class="form-control">
+                <label for="datetimepicker" class=""><b>Data Final</b></label>
+                <div class="input-group date hidden-print datetimepicker">
+                    <input type="text" name="dataFinal" value='{{ dataFinal }}' class="form-control" placeholder="01/01/2014">
                     <span class="input-group-addon add-on glyphicon glyphicon-calendar"></span>
                 </div>
             </div>
 
             <div class="col-md-1">
-                <button type="submit" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-search"></span></button>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
             </div>
 </form>
 </div>
@@ -64,6 +62,7 @@
         </tfoot>
         {% endif %}
       </table>
+  <label> Total {{ total }}</label>
 </div><!-- FIM TABELA -->
 {% if total != NULL and contas|length > 0 %}
  <button type="submit" onClick="window.print()" class="btn btn-info col-md-offset-11 col-sm-1 hidden-print">Print</button>
